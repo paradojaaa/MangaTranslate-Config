@@ -1,0 +1,33 @@
+name: Firmar configuración de servidores
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - providers.json
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sign:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Firmar providers.json
+        env:
+          PROVIDERS_SIGNING_PRIVATE_KEY: ${{ secrets.PROVIDERS_SIGNING_PRIVATE_KEY }}
+        run: xcrun swift .github/scripts/sign-providers.swift providers.json providers.json.sig
+
+      - name: Publicar firma
+        run: |
+          if git diff --quiet -- providers.json.sig; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add providers.json.sig
+          git commit -m "Actualizar firma de providers.json"
+          git push
