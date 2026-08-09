@@ -2,6 +2,8 @@
 
 import json
 import os
+import random
+import re
 import socket
 import ssl
 import sys
@@ -14,7 +16,10 @@ from pathlib import Path
 CONFIG_PATH = Path("providers.json")
 STATE_PATH = Path(".github/provider-monitor-state.json")
 TIMEOUT_SECONDS = 20
-USER_AGENT = "MangaTranslate-ProviderMonitor/1.0"
+USER_AGENT = (
+    "Mozilla/5.0 (iPad; CPU OS 18_0 like Mac OS X) "
+    "AppleWebKit/605.1.15 Version/18.0 Mobile/15E148 Safari/604.1"
+)
 
 
 def load_json(path: Path, default):
@@ -109,8 +114,10 @@ def check_url(url):
             or parsed.path.rstrip("/") == "/api"
         ):
             return True, "HTTP 404 esperado en la raíz de la API"
-        if error.code in (401, 403, 407, 429, 451):
-            return False, f"HTTP {error.code}: posible bloqueo, límite, región o VPN"
+        if error.code in (401, 403, 429):
+            return True, f"HTTP {error.code}: accesible, pero bloquea comprobaciones automatizadas"
+        if error.code in (407, 451):
+            return False, f"HTTP {error.code}: posible bloqueo, región o VPN"
         return False, f"HTTP {error.code}"
     except urllib.error.URLError as error:
         return False, f"red: {error.reason}"
@@ -147,6 +154,175 @@ def check_url(url):
     return True, f"HTTP {status}"
 
 
+def provider_probe_url(provider):
+    base = provider["domains"][0].rstrip("/")
+    provider_id = provider.get("id", "")
+    engine = provider.get("engine", "")
+    language = provider.get("language", {}).get("code", "en").split("-")[0]
+    if engine == "mangadex":
+        query = urllib.parse.urlencode(
+            {
+                "limit": 5,
+                "includes[]": "cover_art",
+                "contentRating[]": "safe",
+                "availableTranslatedLanguage[]": language,
+            }
+        )
+        return f"{base}/manga?{query}"
+    suffixes = {
+        "rawdevart": "/spa/home",
+        "rawkuma": "/wp-json/wp/v2/manga?per_page=5&_embed",
+        "senmanga": "/api/directory?page=1&type=Manga&order=popular",
+        "remanga": "/v2/titles/top/?count=5&page=1&period=all&section=all&tag=all",
+        "inventario-oculto": "/?s=&post_type=wp-manga&m_orderby=views",
+    }
+    return base + suffixes.get(provider_id, "/")
+
+
+def fetch_probe(url, referer=None, byte_limit=524288):
+    request = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": USER_AGENT,
+            "Accept": "text/html,application/json;q=0.9,image/*;q=0.8,*/*;q=0.7",
+            "Referer": referer or url,
+        },
+    )
+    context = ssl.create_default_context()
+    with urllib.request.urlopen(request, timeout=TIMEOUT_SECONDS, context=context) as response:
+        return (
+            response.status,
+            response.geturl(),
+            response.headers.get("Content-Type", "").lower(),
+            response.read(byte_limit),
+        )
+
+
+def nested_strings(value):
+    if isinstance(value, str):
+        yield value
+    elif isinstance(value, dict):
+        for child in value.values():
+            yield from nested_strings(child)
+    elif isinstance(value, list):
+        for child in value:
+            yield from nested_strings(child)
+
+
+def mangadex_images(payload):
+    result = []
+    for manga in payload.get("data", []):
+        manga_id = manga.get("id")
+        for relationship in manga.get("relationships", []):
+            if relationship.get("type") != "cover_art":
+                continue
+            filename = relationship.get("attributes", {}).get("fileName")
+            if manga_id and filename:
+                result.append(
+                    f"https://uploads.mangadex.org/covers/{manga_id}/{filename}.256.jpg"
+                )
+    return result
+
+
+def image_candidates(body, content_type, base_url, provider):
+    values = []
+    if "json" in content_type or body.lstrip().startswith((b"{", b"[")):
+        payload = json.loads(body.decode("utf-8"))
+        if provider.get("engine") == "mangadex" and isinstance(payload, dict):
+            values.extend(mangadex_images(payload))
+        values.extend(nested_strings(payload))
+    else:
+        text = body.decode("utf-8", errors="ignore")
+        values.extend(
+            re.findall(
+                r'''(?is)(?:src|data-src|data-lazy-src|data-original|content)\s*=\s*["']([^"']+)["']''',
+                text,
+            )
+        )
+
+    candidates = []
+    seen = set()
+    for raw in values:
+        raw = raw.replace("\\/", "/").replace("&amp;", "&").strip()
+        lower = raw.lower()
+        looks_like_image = bool(
+            re.search(r"\.(?:jpe?g|png|webp|avif|gif)(?:[?#].*)?$", lower)
+            or "/covers/" in lower
+            or "/media/" in lower
+            or "/uploads/" in lower
+        )
+        if not looks_like_image or raw.startswith("data:"):
+            continue
+        absolute = urllib.parse.urljoin(base_url, raw)
+        if absolute.startswith(("http://", "https://")) and absolute not in seen:
+            seen.add(absolute)
+            candidates.append(absolute)
+    random.SystemRandom().shuffle(candidates)
+    candidates.sort(
+        key=lambda value: not any(
+            marker in value.lower()
+            for marker in ("cover", "manga", "media", "uploads", "thumbnail")
+        )
+    )
+    return candidates
+
+
+def is_image(body, content_type):
+    if content_type.startswith("image/") and len(body) >= 32:
+        return True
+    signatures = (
+        b"\xff\xd8\xff",
+        b"\x89PNG\r\n\x1a\n",
+        b"GIF87a",
+        b"GIF89a",
+        b"RIFF",
+    )
+    return len(body) >= 32 and (
+        body.startswith(signatures) or b"ftypavif" in body[:32] or b"ftypheic" in body[:32]
+    )
+
+
+def check_provider(provider):
+    name = provider.get("name", provider.get("id", "Desconocido"))
+    base = provider["domains"][0]
+    base_ok, base_detail = check_url(base)
+    if not base_ok:
+        return False, base_detail
+
+    probe_url = provider_probe_url(provider)
+    try:
+        _, final_url, content_type, body = fetch_probe(probe_url)
+        candidates = image_candidates(body, content_type, final_url, provider)
+    except urllib.error.HTTPError as error:
+        if error.code in (401, 403, 429):
+            return True, f"HTTP {error.code}: GitHub no puede hacer la prueba completa"
+        return False, f"el catálogo de {name} responde HTTP {error.code}"
+    except (ValueError, json.JSONDecodeError) as error:
+        return False, f"el catálogo cambió de estructura: {error}"
+    except Exception as error:
+        return False, f"no se pudo abrir el catálogo: {error}"
+
+    if not candidates:
+        return False, "el catálogo responde, pero no se encuentra ninguna portada"
+
+    errors = []
+    for image_url in candidates[:8]:
+        try:
+            status, _, image_type, image_body = fetch_probe(
+                image_url,
+                referer=final_url,
+                byte_limit=16384,
+            )
+            if 200 <= status < 400 and is_image(image_body, image_type):
+                return True, "catálogo y una imagen comprobados correctamente"
+            errors.append(f"HTTP {status} o contenido no válido")
+        except urllib.error.HTTPError as error:
+            errors.append(f"HTTP {error.code}")
+        except Exception as error:
+            errors.append(str(error))
+    return False, "se encontraron mangas, pero no se pudo cargar ninguna imagen: " + errors[0]
+
+
 def telegram(message):
     token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
     chat_id = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
@@ -171,28 +347,38 @@ def main():
     config = load_json(CONFIG_PATH, {})
     validation_errors = validate_config(config)
     previous = load_json(STATE_PATH, {"targets": {}, "configValid": True})
+    migrating_state = previous.get("monitorVersion") != 3
     current_targets = {}
     incidents = []
     recoveries = []
 
-    for url, providers in targets_from(config).items():
-        providers = sorted(set(providers))
-        healthy, detail = check_url(url)
-        current_targets[url] = {
+    enabled_providers = [
+        provider
+        for provider in config.get("providers", [])
+        if isinstance(provider, dict) and provider.get("enabled", True)
+    ]
+    for provider in enabled_providers:
+        provider_id = provider.get("id", provider.get("name", "desconocido"))
+        label = provider.get("name", provider_id)
+        language = provider.get("language", {}).get("name")
+        if language:
+            label = f"{label} ({language})"
+        healthy, detail = check_provider(provider)
+        print(f"{'OK' if healthy else 'ERROR'} · {label}: {detail}")
+        current_targets[provider_id] = {
             "healthy": healthy,
-            "providers": providers,
+            "name": label,
         }
-        old = previous.get("targets", {}).get(url)
-        label = ", ".join(sorted(set(providers)))
+        old = previous.get("targets", {}).get(provider_id)
         if not healthy and (old is None or old.get("healthy", True)):
-            incidents.append(f"• {label}\n  {url}\n  {detail}")
-        elif healthy and old is not None and not old.get("healthy", True):
-            recoveries.append(f"• {label}\n  {url}")
+            incidents.append(f"• {label}\n  {detail}")
+        elif healthy and old is not None and not old.get("healthy", True) and not migrating_state:
+            recoveries.append(f"• {label}")
 
     was_config_valid = previous.get("configValid", True)
     if validation_errors and was_config_valid:
         incidents.insert(0, "• providers.json inválido\n  " + "\n  ".join(validation_errors))
-    elif not validation_errors and not was_config_valid:
+    elif not validation_errors and not was_config_valid and not migrating_state:
         recoveries.insert(0, "• providers.json vuelve a tener una estructura válida")
 
     message_parts = []
@@ -204,12 +390,13 @@ def main():
         message_parts.insert(
             0,
             f"✅ Monitor diario de MangaTranslate configurado\n"
-            f"Se han comprobado {len(current_targets)} destinos.",
+            f"Se han probado {len(current_targets)} catálogos y sus imágenes.",
         )
     if message_parts:
         telegram("\n\n".join(message_parts))
 
     state = {
+        "monitorVersion": 3,
         "configValid": not validation_errors,
         "configErrors": validation_errors,
         "targets": current_targets,
@@ -219,7 +406,7 @@ def main():
         json.dumps(state, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
-    print(f"Comprobados {len(current_targets)} destinos; {len(incidents)} incidencias; {len(recoveries)} recuperaciones")
+    print(f"Comprobados {len(current_targets)} proveedores; {len(incidents)} incidencias; {len(recoveries)} recuperaciones")
 
 
 if __name__ == "__main__":
