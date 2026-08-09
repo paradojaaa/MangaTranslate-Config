@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 1,
+  "revision": 1,
+  "updatedAt": "2026-08-09T12:00:00Z",
+  "minimumAppVersion": "0.8",
+  "providers": [
+    {
+      "id": "mangadex",
+      "name": "MangaDex",
+      "language": {
+        "code": "en",
+        "name": "Inglés"
+      },
+      "engine": "mangadex",
+      "enabled": true,
+      "order": 10,
+      "domains": [
+        "https://api.mangadex.org"
+      ]
+    },
+    {
+      "id": "mangafox",
+      "name": "MangaFox",
+      "language": {
+        "code": "en",
+        "name": "Inglés"
+      },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 20,
+      "domains": [
+        "https://fanfox.net"
+      ],
+      "endpoints": {
+        "mobile": "https://m.fanfox.net"
+      }
+    },
+    {
+      "id": "mangadex-fr",
+      "name": "MangaDex",
+      "language": {
+        "code": "fr",
+        "name": "Francés"
+      },
+      "engine": "mangadex",
+      "enabled": true,
+      "order": 30,
+      "domains": [
+        "https://api.mangadex.org"
+      ]
+    },
+    {
+      "id": "mangadex-de",
+      "name": "MangaDex",
+      "language": {
+        "code": "de",
+        "name": "Alemán"
+      },
+      "engine": "mangadex",
+      "enabled": true,
+      "order": 40,
+      "domains": [
+        "https://api.mangadex.org"
+      ]
+    },
+    {
+      "id": "mangadex-it",
+      "name": "MangaDex",
+      "language": {
+        "code": "it",
+        "name": "Italiano"
+      },
+      "engine": "mangadex",
+      "enabled": true,
+      "order": 50,
+      "domains": [
+        "https://api.mangadex.org"
+      ]
+    },
+    {
+      "id": "mangadex-pt-br",
+      "name": "MangaDex",
+      "language": {
+        "code": "pt-br",
+        "name": "Portugués (Brasil)"
+      },
+      "engine": "mangadex",
+      "enabled": true,
+      "order": 60,
+      "domains": [
+        "https://api.mangadex.org"
+      ]
+    },
+    {
+      "id": "rawdevart",
+      "name": "RawDevArt",
+      "language": {
+        "code": "ja",
+        "name": "Japonés"
+      },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 70,
+      "domains": [
+        "https://rawdevart.art"
+      ]
+    },
+    {
+      "id": "rawkuma",
+      "name": "RawKuma",
+      "language": {
+        "code": "ja",
+        "name": "Japonés"
+      },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 80,
+      "domains": [
+        "https://rawkuma.net"
+      ]
+    },
+    {
+      "id": "senmanga",
+      "name": "SenManga",
+      "language": {
+        "code": "ja",
+        "name": "Japonés"
+      },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 90,
+      "domains": [
+        "https://raw.senmanga.com"
+      ]
+    },
+    {
+      "id": "zonatmo",
+      "name": "TuMangaOnline",
+      "language": {
+        "code": "es",
+        "name": "Español"
+      },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 100,
+      "domains": [
+        "https://zonatmo.org"
+      ]
+    },
+    {
+      "id": "inventario-oculto",
+      "name": "Inventario Oculto",
+      "language": {
+        "code": "es",
+        "name": "Español"
+      },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 110,
+      "domains": [
+        "https://inventariooculto.com"
+      ]
+    },
+    {
+      "id": "manga-top-list",
+      "name": "MangaTopList",
+      "language": {
+        "code": "es",
+        "name": "Español"
+      },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 120,
+      "domains": [
+        "https://www.mangatoplist.com/es/"
+      ],
+      "endpoints": {
+        "ajax": "https://www.mangatoplist.com/wp-admin/admin-ajax.php"
+      }
+    },
+    {
+      "id": "remanga",
+      "name": "ReManga",
+      "language": {
+        "code": "ru",
+        "name": "Ruso"
+      },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 130,
+      "domains": [
+        "https://api.remanga.org/api/"
+      ]
+    }
+  ]
+}
