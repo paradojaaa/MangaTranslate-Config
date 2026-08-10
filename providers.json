@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 3,
-  "updatedAt": "2026-08-10T13:15:00Z",
+  "revision": 4,
+  "updatedAt": "2026-08-10T17:15:00Z",
   "minimumAppVersion": "0.8",
   "providers": [
     { "id": "mangadex", "name": "MangaDex", "language": { "code": "en", "name": "Inglés" }, "engine": "mangadex", "enabled": true, "order": 10, "domains": ["https://api.mangadex.org"] },
@@ -18,7 +18,7 @@
     { "id": "manga-top-list", "name": "MangaTopList", "language": { "code": "es", "name": "Español" }, "engine": "builtin", "enabled": true, "order": 80, "domains": ["https://www.mangatoplist.com/es/"], "endpoints": { "ajax": "https://www.mangatoplist.com/wp-admin/admin-ajax.php" } },
     { "id": "remanga", "name": "ReManga", "language": { "code": "ru", "name": "Ruso" }, "engine": "builtin", "enabled": true, "order": 90, "domains": ["https://api.remanga.org/api/"] },
     { "id": "tencent-comics", "name": "Tencent Animation", "language": { "code": "zh-Hans", "name": "Chino simplificado" }, "engine": "builtin", "enabled": true, "order": 100, "domains": ["https://ac.qq.com"] },
-    { "id": "bilibili-manga", "name": "Bilibili Manga", "language": { "code": "zh-Hans", "name": "Chino simplificado" }, "engine": "builtin", "enabled": true, "order": 110, "domains": ["https://manga.bilibili.com"] },
-    { "id": "dongman", "name": "Dongman", "language": { "code": "zh-Hans", "name": "Chino simplificado" }, "engine": "builtin", "enabled": true, "order": 120, "domains": ["https://www.dongmanmanhua.cn"] }
+    { "id": "dongman", "name": "Dongman", "language": { "code": "zh-Hans", "name": "Chino simplificado" }, "engine": "builtin", "enabled": true, "order": 120, "domains": ["https://www.dongmanmanhua.cn"] },
+    { "id": "manhuagui", "name": "Manhuagui", "language": { "code": "zh-Hans", "name": "Chino simplificado" }, "engine": "builtin", "enabled": true, "order": 130, "domains": ["https://m.manhuagui.com"] }
   ]
 }
