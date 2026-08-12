@@ -1,13 +1,14 @@
 {
   "schemaVersion": 1,
-  "revision": 8,
-  "updatedAt": "2026-08-12T09:00:00Z",
+  "revision": 9,
+  "updatedAt": "2026-08-12T12:00:00Z",
   "minimumAppVersion": "0.8",
   "providers": [
     { "id": "mangadex", "name": "MangaDex", "language": { "code": "en", "name": "Inglés" }, "engine": "mangadex", "enabled": true, "order": 10, "domains": ["https://api.mangadex.org"] },
     { "id": "mangafox", "name": "MangaFox", "language": { "code": "en", "name": "Inglés" }, "engine": "builtin", "enabled": true, "order": 20, "domains": ["https://fanfox.net"], "endpoints": { "mobile": "https://m.fanfox.net" } },
     { "id": "mangareader", "name": "MangaReader", "language": { "code": "en", "name": "Inglés" }, "engine": "builtin", "enabled": true, "order": 25, "domains": ["https://mangareader.to"] },
     { "id": "kissmanga", "name": "KissManga", "language": { "code": "en", "name": "Inglés" }, "engine": "builtin", "enabled": true, "order": 26, "domains": ["https://www.mangakiss.vip"] },
+    { "id": "webtoons-en", "name": "WEBTOON", "language": { "code": "en-US", "name": "Inglés" }, "engine": "builtin", "enabled": true, "order": 27, "domains": ["https://m.webtoons.com/en"] },
     { "id": "mangadex-fr", "name": "MangaDex", "language": { "code": "fr", "name": "Francés" }, "engine": "builtin", "enabled": true, "order": 21, "domains": ["https://api.mangadex.org"] },
     { "id": "mangadex-de", "name": "MangaDex", "language": { "code": "de", "name": "Alemán" }, "engine": "builtin", "enabled": true, "order": 22, "domains": ["https://api.mangadex.org"] },
     { "id": "mangadex-it", "name": "MangaDex", "language": { "code": "it", "name": "Italiano" }, "engine": "builtin", "enabled": true, "order": 23, "domains": ["https://api.mangadex.org"] },
@@ -21,7 +22,7 @@
     { "id": "remanga", "name": "ReManga", "language": { "code": "ru", "name": "Ruso" }, "engine": "builtin", "enabled": true, "order": 90, "domains": ["https://api.remanga.org/api/"] },
     { "id": "tencent-comics", "name": "Tencent Animation", "language": { "code": "zh-Hans", "name": "Chino simplificado" }, "engine": "builtin", "enabled": true, "order": 100, "domains": ["https://ac.qq.com"] },
     { "id": "dongman", "name": "Dongman", "language": { "code": "zh-Hans", "name": "Chino simplificado" }, "engine": "builtin", "enabled": true, "order": 120, "domains": ["https://www.dongmanmanhua.cn"] },
-    { "id": "manhuaren", "name": "Manhuaren", "language": { "code": "zh-Hans", "name": "Chino simplificado" }, "engine": "builtin", "enabled": true, "order": 130, "domains": ["https://www.manhuaren.com"] },
+    { "id": "manhuaren", "name": "Manhuaren", "language": { "code": "zh-Hant", "name": "Chino tradicional" }, "engine": "builtin", "enabled": true, "order": 130, "domains": ["https://www.manhuaren.com"] },
     { "id": "webtoons-zh-hant", "name": "LINE WEBTOON", "language": { "code": "zh-Hant", "name": "Chino tradicional" }, "engine": "builtin", "enabled": true, "order": 140, "domains": ["https://m.webtoons.com/zh-hant"] }
   ]
 }
