@@ -1,28 +1,193 @@
 {
   "schemaVersion": 1,
-  "revision": 9,
-  "updatedAt": "2026-08-12T12:00:00Z",
+  "revision": 10,
+  "updatedAt": "2026-08-22T12:00:00Z",
   "minimumAppVersion": "0.8",
   "providers": [
-    { "id": "mangadex", "name": "MangaDex", "language": { "code": "en", "name": "Inglés" }, "engine": "mangadex", "enabled": true, "order": 10, "domains": ["https://api.mangadex.org"] },
-    { "id": "mangafox", "name": "MangaFox", "language": { "code": "en", "name": "Inglés" }, "engine": "builtin", "enabled": true, "order": 20, "domains": ["https://fanfox.net"], "endpoints": { "mobile": "https://m.fanfox.net" } },
-    { "id": "mangareader", "name": "MangaReader", "language": { "code": "en", "name": "Inglés" }, "engine": "builtin", "enabled": true, "order": 25, "domains": ["https://mangareader.to"] },
-    { "id": "kissmanga", "name": "KissManga", "language": { "code": "en", "name": "Inglés" }, "engine": "builtin", "enabled": true, "order": 26, "domains": ["https://www.mangakiss.vip"] },
-    { "id": "webtoons-en", "name": "WEBTOON", "language": { "code": "en-US", "name": "Inglés" }, "engine": "builtin", "enabled": true, "order": 27, "domains": ["https://m.webtoons.com/en"] },
-    { "id": "mangadex-fr", "name": "MangaDex", "language": { "code": "fr", "name": "Francés" }, "engine": "builtin", "enabled": true, "order": 21, "domains": ["https://api.mangadex.org"] },
-    { "id": "mangadex-de", "name": "MangaDex", "language": { "code": "de", "name": "Alemán" }, "engine": "builtin", "enabled": true, "order": 22, "domains": ["https://api.mangadex.org"] },
-    { "id": "mangadex-it", "name": "MangaDex", "language": { "code": "it", "name": "Italiano" }, "engine": "builtin", "enabled": true, "order": 23, "domains": ["https://api.mangadex.org"] },
-    { "id": "mangadex-pt-br", "name": "MangaDex", "language": { "code": "pt-br", "name": "Portugués (Brasil)" }, "engine": "builtin", "enabled": true, "order": 24, "domains": ["https://api.mangadex.org"] },
-    { "id": "rawdevart", "name": "RawDevArt", "language": { "code": "ja", "name": "Japonés" }, "engine": "builtin", "enabled": true, "order": 30, "domains": ["https://rawdevart.art"] },
-    { "id": "rawkuma", "name": "RawKuma", "language": { "code": "ja", "name": "Japonés" }, "engine": "builtin", "enabled": true, "order": 40, "domains": ["https://rawkuma.net"] },
-    { "id": "senmanga", "name": "SenManga", "language": { "code": "ja", "name": "Japonés" }, "engine": "builtin", "enabled": true, "order": 50, "domains": ["https://raw.senmanga.com"] },
-    { "id": "zonatmo", "name": "TuMangaOnline", "language": { "code": "es", "name": "Español" }, "engine": "builtin", "enabled": true, "order": 60, "domains": ["https://zonatmo.org"] },
-    { "id": "inventario-oculto", "name": "Inventario Oculto", "language": { "code": "es", "name": "Español" }, "engine": "builtin", "enabled": true, "order": 70, "domains": ["https://inventariooculto.com"] },
-    { "id": "manga-top-list", "name": "MangaTopList", "language": { "code": "es", "name": "Español" }, "engine": "builtin", "enabled": true, "order": 80, "domains": ["https://www.mangatoplist.com/es/"], "endpoints": { "ajax": "https://www.mangatoplist.com/wp-admin/admin-ajax.php" } },
-    { "id": "remanga", "name": "ReManga", "language": { "code": "ru", "name": "Ruso" }, "engine": "builtin", "enabled": true, "order": 90, "domains": ["https://api.remanga.org/api/"] },
-    { "id": "tencent-comics", "name": "Tencent Animation", "language": { "code": "zh-Hans", "name": "Chino simplificado" }, "engine": "builtin", "enabled": true, "order": 100, "domains": ["https://ac.qq.com"] },
-    { "id": "dongman", "name": "Dongman", "language": { "code": "zh-Hans", "name": "Chino simplificado" }, "engine": "builtin", "enabled": true, "order": 120, "domains": ["https://www.dongmanmanhua.cn"] },
-    { "id": "manhuaren", "name": "Manhuaren", "language": { "code": "zh-Hant", "name": "Chino tradicional" }, "engine": "builtin", "enabled": true, "order": 130, "domains": ["https://www.manhuaren.com"] },
-    { "id": "webtoons-zh-hant", "name": "LINE WEBTOON", "language": { "code": "zh-Hant", "name": "Chino tradicional" }, "engine": "builtin", "enabled": true, "order": 140, "domains": ["https://m.webtoons.com/zh-hant"] }
+    {
+      "id": "mangadex",
+      "name": "MangaDex",
+      "language": { "code": "en", "name": "Inglés" },
+      "engine": "mangadex",
+      "enabled": true,
+      "order": 10,
+      "domains": ["https://api.mangadex.org"]
+    },
+    {
+      "id": "mangafox",
+      "name": "MangaFox",
+      "language": { "code": "en", "name": "Inglés" },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 20,
+      "domains": ["https://fanfox.net"],
+      "endpoints": { "mobile": "https://m.fanfox.net" }
+    },
+    {
+      "id": "kissmanga",
+      "name": "KissManga",
+      "language": { "code": "en", "name": "Inglés" },
+      "engine": "builtin",
+      "enabled": false,
+      "order": 26,
+      "domains": ["https://www.mangakiss.vip"]
+    },
+    {
+      "id": "mangadex-fr",
+      "name": "MangaDex",
+      "language": { "code": "fr", "name": "Francés" },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 21,
+      "domains": ["https://api.mangadex.org"]
+    },
+    {
+      "id": "mangadex-de",
+      "name": "MangaDex",
+      "language": { "code": "de", "name": "Alemán" },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 22,
+      "domains": ["https://api.mangadex.org"]
+    },
+    {
+      "id": "mangadex-it",
+      "name": "MangaDex",
+      "language": { "code": "it", "name": "Italiano" },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 23,
+      "domains": ["https://api.mangadex.org"]
+    },
+    {
+      "id": "mangadex-pt-br",
+      "name": "MangaDex",
+      "language": { "code": "pt-br", "name": "Portugués" },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 24,
+      "domains": ["https://api.mangadex.org"]
+    },
+    {
+      "id": "rawdevart",
+      "name": "RawDevArt",
+      "language": { "code": "ja", "name": "Japonés" },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 30,
+      "domains": ["https://rawdevart.art"]
+    },
+    {
+      "id": "rawkuma",
+      "name": "RawKuma",
+      "language": { "code": "ja", "name": "Japonés" },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 40,
+      "domains": ["https://rawkuma.net"]
+    },
+    {
+      "id": "senmanga",
+      "name": "SenManga",
+      "language": { "code": "ja", "name": "Japonés" },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 50,
+      "domains": ["https://raw.senmanga.com"]
+    },
+    {
+      "id": "zonatmo",
+      "name": "TuMangaOnline",
+      "language": { "code": "es", "name": "Español" },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 60,
+      "domains": ["https://zonatmo.org"]
+    },
+    {
+      "id": "inventario-oculto",
+      "name": "Inventario Oculto",
+      "language": { "code": "es", "name": "Español" },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 70,
+      "domains": ["https://inventariooculto.com"]
+    },
+    {
+      "id": "manga-top-list",
+      "name": "MangaTopList",
+      "language": { "code": "es", "name": "Español" },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 80,
+      "domains": ["https://www.mangatoplist.com/es/"],
+      "endpoints": {
+        "ajax": "https://www.mangatoplist.com/wp-admin/admin-ajax.php"
+      }
+    },
+    {
+      "id": "remanga",
+      "name": "ReManga",
+      "language": { "code": "ru", "name": "Ruso" },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 90,
+      "domains": ["https://api.remanga.org/api/"]
+    },
+    {
+      "id": "tencent-comics",
+      "name": "Tencent Animation",
+      "language": { "code": "zh-Hans", "name": "Chino simplificado" },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 100,
+      "domains": ["https://ac.qq.com"]
+    },
+    {
+      "id": "dongman",
+      "name": "Dongman",
+      "language": { "code": "zh-Hans", "name": "Chino simplificado" },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 120,
+      "domains": ["https://www.dongmanmanhua.cn"]
+    },
+    {
+      "id": "manhuaren",
+      "name": "Manhuaren",
+      "language": { "code": "zh-Hant", "name": "Chino tradicional" },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 130,
+      "domains": ["https://www.manhuaren.com"]
+    },
+    {
+      "id": "webtoons-zh-hant",
+      "name": "LINE WEBTOON",
+      "language": { "code": "zh-Hant", "name": "Chino tradicional" },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 140,
+      "domains": ["https://m.webtoons.com/zh-hant"]
+    },
+    {
+      "id": "webtoons-en",
+      "name": "WEBTOON",
+      "language": { "code": "en-US", "name": "Inglés" },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 27,
+      "domains": ["https://m.webtoons.com/en"]
+    },
+    {
+      "id": "naver-webtoon",
+      "name": "Naver Webtoon",
+      "language": { "code": "ko", "name": "Coreano" },
+      "engine": "builtin",
+      "enabled": true,
+      "order": 150,
+      "domains": ["https://m.comic.naver.com"],
+      "endpoints": { "mobile": "https://m.comic.naver.com" }
+    }
   ]
 }
