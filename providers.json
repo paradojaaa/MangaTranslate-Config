@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 12,
-  "updatedAt": "2026-09-22T12:00:00Z",
+  "revision": 13,
+  "updatedAt": "2026-09-26T12:00:00Z",
   "minimumAppVersion": "0.8",
   "providers": [
     {
@@ -9,7 +9,7 @@
       "name": "MangaDex",
       "language": { "code": "en", "name": "Inglés" },
       "engine": "mangadex",
-      "enabled": true,
+      "enabled": false,
       "order": 10,
       "domains": ["https://api.mangadex.org"]
     },
@@ -18,7 +18,7 @@
       "name": "MangaFox",
       "language": { "code": "en", "name": "Inglés" },
       "engine": "builtin",
-      "enabled": true,
+      "enabled": false,
       "order": 20,
       "domains": ["https://fanfox.net"],
       "endpoints": { "mobile": "https://m.fanfox.net" }
@@ -28,7 +28,7 @@
       "name": "KissManga",
       "language": { "code": "en", "name": "Inglés" },
       "engine": "builtin",
-      "enabled": true,
+      "enabled": false,
       "order": 26,
       "domains": ["https://www.mangakiss.vip"]
     },
@@ -37,7 +37,7 @@
       "name": "MangaDex",
       "language": { "code": "fr", "name": "Francés" },
       "engine": "builtin",
-      "enabled": true,
+      "enabled": false,
       "order": 21,
       "domains": ["https://api.mangadex.org"]
     },
@@ -46,7 +46,7 @@
       "name": "MangaDex",
       "language": { "code": "de", "name": "Alemán" },
       "engine": "builtin",
-      "enabled": true,
+      "enabled": false,
       "order": 22,
       "domains": ["https://api.mangadex.org"]
     },
@@ -73,7 +73,7 @@
       "name": "RawDevArt",
       "language": { "code": "ja", "name": "Japonés" },
       "engine": "builtin",
-      "enabled": true,
+      "enabled": false,
       "order": 30,
       "domains": ["https://rawdevart.art"]
     },
@@ -82,7 +82,7 @@
       "name": "RawKuma",
       "language": { "code": "ja", "name": "Japonés" },
       "engine": "builtin",
-      "enabled": true,
+      "enabled": false,
       "order": 40,
       "domains": ["https://rawkuma.net"]
     },
@@ -91,7 +91,7 @@
       "name": "SenManga",
       "language": { "code": "ja", "name": "Japonés" },
       "engine": "builtin",
-      "enabled": true,
+      "enabled": false,
       "order": 50,
       "domains": ["https://raw.senmanga.com"]
     },
@@ -100,7 +100,7 @@
       "name": "TuMangaOnline",
       "language": { "code": "es", "name": "Español" },
       "engine": "builtin",
-      "enabled": true,
+      "enabled": false,
       "order": 60,
       "domains": ["https://zonatmo.org"]
     },
@@ -109,7 +109,7 @@
       "name": "Inventario Oculto",
       "language": { "code": "es", "name": "Español" },
       "engine": "builtin",
-      "enabled": true,
+      "enabled": false,
       "order": 70,
       "domains": ["https://inventariooculto.com"]
     },
@@ -157,7 +157,7 @@
       "name": "Manhuaren",
       "language": { "code": "zh-Hant", "name": "Chino tradicional" },
       "engine": "builtin",
-      "enabled": true,
+      "enabled": false,
       "order": 130,
       "domains": ["https://www.manhuaren.com"]
     },
